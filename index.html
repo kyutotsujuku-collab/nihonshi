@@ -95,11 +95,14 @@ select{font-size:15px;padding:8px;border-radius:8px;border:1px solid var(--line)
 .year-strip div{flex:0 0 auto;background:var(--chip);border-radius:8px;padding:4px 10px;font-size:13px;white-space:nowrap}
 .flowline{border-left:3px solid var(--acc);padding-left:10px;margin:6px 0 10px}
 .flowline .h{font-weight:700}
+.howto summary{cursor:pointer;font-size:15px}
+.howto ol{margin:8px 0 0;padding-left:20px;font-size:14px;line-height:1.7}
+.howto li{margin-bottom:6px}
 .flowline .o{font-size:14px;color:var(--sub)}
 </style>
 </head>
 <body>
-<header><button id="back" style="display:none">‹ 戻る</button><h1 id="ttl">日本史 流れマスター</h1><span class="ver">v1</span></header>
+<header><button id="back" style="display:none">‹ 戻る</button><h1 id="ttl">日本史 流れマスター</h1><span class="ver">v2</span></header>
 <main id="main"></main>
 <nav>
 <button data-tab="learn"><span class="ic">📖</span>学習</button>
@@ -148,7 +151,21 @@ function rLearn(){
   const tm=todayMenu();
   if(tm){h+=`<div class="menu"><b>今日のメニュー</b><div class="row" style="margin-top:4px"><div class="grow">第${tm.L.id}講 ${esc(tm.L.title)}<br><span class="sub">PART${tm.pi+1} ${esc(tm.L.parts[tm.pi].title)}</span></div><button class="btn p sm" onclick="go({tab:'part',l:${tm.L.id},p:${tm.pi},step:0})">始める</button></div></div>`;}
   else h+=`<div class="menu"><b>全PART達成！</b> 演習タブで通史整序・ランダム4択を回そう。</div>`;
-  h+=`<div class="sub">読む→穴埋め→4択→整序 の順で1PARTずつ。4択80%以上＋整序全問正解で✓。</div>`;
+  h+=`<details class="card howto"${S.howtoSeen?'':' open'} ontoggle="S.howtoSeen=true;save()"><summary><b>使い方</b>（タップで開閉）</summary>
+<ol>
+<li><b>まず「今日のメニュー」の「始める」</b>。第1講から順に、1日1〜2PART（約20分）が目安。</li>
+<li>1PARTは <b>読む → 穴埋め → 4択 → 整序 → 判定</b> の5ステップ。<br>
+・<b>読む</b>：因果つき年表（青い「なぜ→」が流れのカギ）→ストーリー→キーワード。ここで「なぜそうなったか」をつかむ。<br>
+・<b>穴埋め</b>：下線をタップで答え。言えなかった語は覚えてから次へ。<br>
+・<b>4択</b>：背景・結果を問う問題が中心。解説まで読む。<br>
+・<b>整序</b>：出来事を古い順にタップ。「1つ戻す」で直せる。</li>
+<li><b>4択80%以上＋整序全問正解</b>でそのPARTに✓。届かなければ「読み直す」→「4択をやり直す」。</li>
+<li>講が終わったら<b>「講の総合問題」</b>（講のページの一番下）でPARTをまたぐ流れを確認。</li>
+<li><b>通史</b>タブ：23講を1本の流れで見直す。試験前の総復習に。</li>
+<li><b>演習</b>タブ：範囲を選んでランダム出題。<b>通史整序</b>（別の講の出来事を混ぜて並べる）が流れの総仕上げ。</li>
+<li><b>間違い</b>タブ：間違えた問題だけやり直せる（正解すると消える）。</li>
+<li>記録はこのスマホ（ブラウザ）に保存。別の端末には引き継がれない。</li>
+</ol></details>`;
   ERAS.forEach(([name,ids])=>{
     h+=`<div class="era">${name}</div>`;
     ids.forEach(id=>{const L=DATA[id-1];const [n,t]=lecProg(L);
